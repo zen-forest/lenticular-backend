@@ -1,6 +1,24 @@
-# Nova API
+# Lenticular Backend
 A robust and reusable REST API template designed to support 10,000 MAUs seamlessly. Unlocks prototyping velocity while maintaining top-tier performance, security, and scalability.
 
+
+## Todo 
+- [ ] Create Item model 
+  - [ ] Mock out fields 
+  - [ ] Make sure fields are validated 
+  - [ ] Test via Admin panel 
+
+
+- [ ] Add Twilio integration for SMS
+  - [ ] Create Twilio account + phone number 
+
+
+
+
+
+
+
+---
 
 
 ## Architecture
