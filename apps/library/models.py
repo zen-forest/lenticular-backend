@@ -28,6 +28,7 @@ class Item(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)  # Timestamp when the item is created
     updated_at = models.DateTimeField(auto_now=True)  # Timestamp when the item is updated
+    is_public = models.BooleanField(default=False)  # New field to indicate public items
 
     def __str__(self):
         return self.url

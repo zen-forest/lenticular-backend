@@ -4,7 +4,7 @@ from .models import Item
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ['id', 'user', 'url', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'url', 'created_at', 'updated_at', 'is_public']
         read_only_fields = ['id', 'user', 'created_at', 'updated_at']
 
     def validate_url(self, value):

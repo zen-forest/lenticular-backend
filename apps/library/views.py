@@ -1,10 +1,12 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .models import Item
 from .serializers import ItemSerializer
+from django.db import models
+from rest_framework.decorators import action
 
 class ItemViewSet(viewsets.ModelViewSet):
     """
@@ -14,8 +16,8 @@ class ItemViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        """Ensure users can only access their own saved items."""
-        return Item.objects.filter(user=self.request.user)
+        """Ensure users can access their own saved items and public items."""
+        return Item.objects.filter(models.Q(user=self.request.user) | models.Q(is_public=True))
 
     def perform_create(self, serializer):
         """Automatically associate the logged-in user with the new item."""
@@ -42,3 +44,10 @@ class ItemViewSet(viewsets.ModelViewSet):
         instance = get_object_or_404(Item, id=kwargs["pk"], user=request.user)
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=False, methods=['get'], permission_classes=[AllowAny])
+    def community(self, request):
+        """Retrieve all public items from all users."""
+        public_items = Item.objects.filter(is_public=True)
+        serializer = self.get_serializer(public_items, many=True)
+        return Response(serializer.data)
